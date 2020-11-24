@@ -1,0 +1,57 @@
+.todo-item__check-label {
+  position: relative;
+  padding-left: 25px;
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.todo-item__check-label:hover {
+  font-weight: bold;
+}
+
+.todo-item__check-label::before {
+  content: '';
+  position: absolute;
+  top: calc(50% - 10px);
+  left: 0;
+
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.done .todo-item__check-label {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.done .todo-item__check-label::before {
+  border-color: #ccc;
+}
+
+.fa-check {
+  display: none;
+  position: absolute;
+  top: calc(50% - 8px);
+  left: 2px;
+}
+
+.done .todo-item__check-label .fa-check {
+  display: block;
+}
+
+.todo-item__del-btn {
+  margin-left: auto;
+  border: none;
+  background-color: transparent;
+}
+
+.fa-trash {
+  color: #ccc;
+}
+
+.fa-trash:hover {
+  color: black;
+}
