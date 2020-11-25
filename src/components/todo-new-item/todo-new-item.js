@@ -3,6 +3,23 @@ import React, { Component } from 'react';
 import './todo-new-item.css';
 
 export default class TodoNewItem extends Component {
+  state = {
+    label: ''
+  };
+
+  onLabelChange = (evt) => {
+    this.setState({
+      label: evt.target.value
+    })
+  };
+
+  onSubmit = (evt) => {
+    evt.preventDefault();
+    this.props.onAdded(this.state.label);
+    this.setState({
+      label: ''
+    });
+  };
 
   render() {
     return (
@@ -10,13 +27,13 @@ export default class TodoNewItem extends Component {
         <form
           className='new-item-form'
           action='#'
-          onSubmit={(evt) => {
-            evt.preventDefault();
-            const newTaskText = document.querySelector('.new-item-input').value;
-            this.props.onAdded(newTaskText)
-            document.querySelector('.new-item-input').value = '';
-            }}>
-          <input className='new-item-input' type='text' placeholder='Enter your taskname here'/>
+          onSubmit={this.onSubmit}>
+          <input
+            className='new-item-input'
+            type='text'
+            placeholder='Enter your taskname here'
+            onChange={this.onLabelChange}
+            value={this.state.label}/>
           <button 
             className='new-item-btn visually-hidden' 
             type='submit'

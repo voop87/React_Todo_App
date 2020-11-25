@@ -144,7 +144,6 @@ export default class App extends Component {
   };
 
   componentDidUpdate() {
-    console.log(this.state.todoData);
     localStorage.setItem('todos', JSON.stringify(this.state.todoData));
   }
 
