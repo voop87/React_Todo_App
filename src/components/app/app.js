@@ -11,7 +11,8 @@ export default class App extends Component {
   nextId = Date.now();
 
   state = {
-    todoData: []
+    todoData: [],
+    filter: 'all'
   };
 
   componentDidMount() {
@@ -104,43 +105,21 @@ export default class App extends Component {
     });
   };
 
-  clearClasses = () => {
-    const listItems = document.querySelectorAll('.todo-item');
-    listItems.forEach((el) => {
-      el.classList.remove('d-none');
-    });
-    const filters = document.querySelectorAll('.filter__input');
-    filters.forEach((el) => {
-      el.classList.remove('active');
-    });
+  filterTasks = (items, filterName) => {
+    switch (filterName) {
+      case 'all':
+        return items;
+      case 'todo': 
+        return items.filter((item) => !item.done);
+      case 'completed':
+        return items.filter((item) => item.done);
+      default:
+        return items;
+    }
   };
 
-  filterAllClick = () => {
-    this.clearClasses();
-    const filterAll = document.getElementById('all');
-    filterAll.classList.add('active');
-  };
-
-  filterTodoClick = () => {
-    this.clearClasses();
-    const listItems = document.querySelectorAll('.todo-item.done');
-    listItems.forEach((el) => {
-      el.classList.add('d-none');
-    });
-    const filterTodo = document.getElementById('todo');
-    filterTodo.classList.add('active');
-  };
-
-  filterCompletedClick = () => {
-    this.clearClasses();
-    const listItems = document.querySelectorAll('.todo-item');
-    listItems.forEach((el) => {
-      if (!el.classList.contains('done')) {
-        el.classList.add('d-none');
-      }
-    });
-    const filterCompleted = document.getElementById('completed');
-    filterCompleted.classList.add('active');
+  changeActiveFilter = (filter) => {
+    this.setState({filter})
   };
 
   componentDidUpdate() {
@@ -149,13 +128,14 @@ export default class App extends Component {
 
   render() {
     const toDoCount = this.state.todoData.length - this.state.todoData.filter((el) => el.done).length;
-
+    const visibleItems = this.filterTasks(this.state.todoData, this.state.filter);
+    
     return (
       <div className='app-container'>
         <AppHeader />
         <TodoNewItem onAdded={this.addTask}/>
         <Todolist
-          todos={this.state.todoData}
+          todos={visibleItems}
           onDeleted={this.deleteTask}
           onToggleDone={this.toggleDone}/>
         <TodoFilter 
@@ -163,9 +143,9 @@ export default class App extends Component {
           onCheckAllDone={this.checkAllDone}
           hasDoneTask={toDoCount !== this.state.todoData.length}
           onClearCompleted={this.clearCompleted}
-          onFilterAllClick={this.filterAllClick}
-          onFilterTodoClick={this.filterTodoClick}
-          onFilterCompletedClick={this.filterCompletedClick}/>
+          filter={this.state.filter}
+          onChangeFilter={this.changeActiveFilter}
+          />
       </div>
     );
   };
