@@ -33,7 +33,8 @@ export default class TodoNewItem extends Component {
             type='text'
             placeholder='Enter your taskname here'
             onChange={this.onLabelChange}
-            value={this.state.label}/>
+            value={this.state.label}
+            required/>
           <button 
             className='new-item-btn visually-hidden' 
             type='submit'
